@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
-import { createUserAction } from "../actions/createUserAction";
+import RegisterInputs from "../components/RegisterInputs";
+import axios from "axios";
 
 const Register = () => {
   const [user, setUser] = useState({
@@ -9,15 +10,25 @@ const Register = () => {
     password: "",
   });
 
+  const [errors, setErrors] = useState({});
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("hi");
-    createUserAction(user);
+
+    try {
+      const response = await axios.post("http://localhost:3001/register", user);
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        return setErrors(error.response.data);
+      }
+    }
     console.log("this is user", user);
     setUser({
       fName: "",
@@ -28,33 +39,12 @@ const Register = () => {
 
   return (
     <div>
-      <form autoComplete="off" onSubmit={handleSubmit}>
-        <input
-          placeholder="your name"
-          type="text"
-          name="fName"
-          value={user.fName}
-          onChange={handleChange}
-          autoComplete="off"
-        />
-        <input
-          placeholder="email"
-          type="email"
-          name="email"
-          value={user.email}
-          onChange={handleChange}
-          autoComplete="off"
-        />
-        <input
-          placeholder="password"
-          type="password"
-          name="password"
-          value={user.password}
-          onChange={handleChange}
-          autoComplete="off"
-        />
-        <button>Register</button>
-      </form>
+      <RegisterInputs
+        user={user}
+        handleSubmit={handleSubmit}
+        handleChange={handleChange}
+        errors={errors}
+      />
     </div>
   );
 };

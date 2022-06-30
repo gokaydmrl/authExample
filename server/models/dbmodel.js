@@ -12,12 +12,12 @@ const User = new Schema(
       type: String,
       required: [true, "please add an email"],
       lowercase: true,
-      unique: [true, "this email already exists"],
+      unique: [true],
     },
     password: {
       type: String,
       required: true,
-      min: [6, "the password should include at least 6 characters"],
+      minLength: [6, "the password should include at least 6 characters"],
     },
   },
   { timestamps: true }
