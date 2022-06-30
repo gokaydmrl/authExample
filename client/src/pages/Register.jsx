@@ -10,7 +10,12 @@ const Register = () => {
     password: "",
   });
 
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({
+    fName: "",
+    email: "",
+    password: "",
+  });
+  console.log("letssee", errors);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,22 +24,22 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("hi");
-
-    try {
-      const response = await axios.post("http://localhost:3001/register", user);
-      return response.data;
-    } catch (error) {
-      if (error.response) {
-        return setErrors(error.response.data);
-      }
-    }
+    console.log("submit denendi");
     console.log("this is user", user);
     setUser({
       fName: "",
       email: "",
       password: "",
     });
+    try {
+      const response = await axios.post("http://localhost:3001/register", user);
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        console.log("eğğ", error.response.data.errorsObject);
+        return setErrors(error.response.data.errorsObject);
+      }
+    }
   };
 
   return (
