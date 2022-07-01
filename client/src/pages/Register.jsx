@@ -14,7 +14,7 @@ const Register = () => {
   });
 
   const [errors, setErrors] = useState({});
-  console.log("letssee", errors);
+  // console.log("letssee", errors);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,6 +28,7 @@ const Register = () => {
     try {
       const response = await axios.post("http://localhost:3001/register", user);
       if (response.status === 201) {
+        localStorage.setItem("user", JSON.stringify(response.data));
         alert("user created sucsfly");
         navigate("../home", { replace: true });
       }

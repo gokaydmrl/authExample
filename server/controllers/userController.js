@@ -1,4 +1,5 @@
 const User = require("../models/dbmodel");
+const jwt = require("jsonwebtoken");
 
 // post user controller
 const handleErrors = (err) => {
@@ -17,6 +18,14 @@ const handleErrors = (err) => {
   return errors;
 };
 
+// creating token
+
+const generateToken = (id) => {
+  return jwt.sign({ id }, "sonradanBak", {
+    expiresIn: 99999,
+  });
+};
+
 exports.postUserHandler = async (req, res) => {
   try {
     const { fName, email, password } = req.body;
@@ -25,7 +34,15 @@ exports.postUserHandler = async (req, res) => {
       email,
       password,
     });
-    res.status(201).json(user);
+
+    const token = generateToken(user._id);
+    res.status(201).json({
+      fName: fName,
+      email: email,
+      password: password,
+      token: token,
+    });
+    // res.cookie("jwt", token, { httpOnly: true, maxAge: 99999 });
   } catch (error) {
     const errorsObject = handleErrors(error);
     res.status(400).json({ errorsObject });
