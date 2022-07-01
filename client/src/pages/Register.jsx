@@ -2,8 +2,11 @@ import React from "react";
 import { useState } from "react";
 import RegisterInputs from "../components/RegisterInputs";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [user, setUser] = useState({
     fName: "",
     email: "",
@@ -20,11 +23,14 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("submit denendi");
     console.log("this is user", user);
 
     try {
       const response = await axios.post("http://localhost:3001/register", user);
+      if (response.status === 201) {
+        alert("user created sucsfly");
+        navigate("../home", { replace: true });
+      }
       setUser(response.data);
     } catch (error) {
       if (error.response) {
@@ -32,6 +38,7 @@ const Register = () => {
         return setErrors(error.response.data.errorsObject);
       }
     }
+
     setUser({
       fName: "",
       email: "",
