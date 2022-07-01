@@ -14,7 +14,7 @@ const RegisterInputs = ({ user, handleSubmit, handleChange, errors }) => {
           onChange={handleChange}
           autoComplete="off"
         />
-        {errors["fName"] !== "" && <p className="alert">{errors["fName"]}</p>}
+        {errors["fName"] && <p className="alert">{errors["fName"]}</p>}
         <br />
         <br />
         <input
@@ -25,7 +25,7 @@ const RegisterInputs = ({ user, handleSubmit, handleChange, errors }) => {
           onChange={handleChange}
           autoComplete="off"
         />
-        {errors["email"] !== "" && <p className="alert">{errors["email"]}</p>}
+        {errors["email"] && <p className="alert">{errors["email"]}</p>}
         <br />
         <br />
         <input
@@ -36,9 +36,7 @@ const RegisterInputs = ({ user, handleSubmit, handleChange, errors }) => {
           onChange={handleChange}
           autoComplete="off"
         />
-        {errors["password"] !== "" && (
-          <p className="alert">{errors["password"]}</p>
-        )}
+        {errors["password"] && <p className="alert">{errors["password"]}</p>}
         <br />
         <br />
         <button>Register</button>

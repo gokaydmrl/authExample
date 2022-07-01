@@ -10,23 +10,19 @@ const Register = () => {
     password: "",
   });
 
-  const [errors, setErrors] = useState({
-    fName: "",
-    email: "",
-    password: "",
-  });
+  const [errors, setErrors] = useState({});
   console.log("letssee", errors);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-   setUser({ ...user, [name]: value });
+    setUser({ ...user, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("submit denendi");
     console.log("this is user", user);
-    
+
     try {
       const response = await axios.post("http://localhost:3001/register", user);
       setUser(response.data);
