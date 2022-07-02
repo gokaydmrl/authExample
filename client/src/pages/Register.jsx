@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 const Register = () => {
   const navigate = useNavigate();
 
-const token = localStorage.getItem("token")
-console.log("this token", token);
+// const token = localStorage.getItem("token")
+// console.log("this token", token);
   
   const [user, setUser] = useState({
     fName: "",
@@ -31,7 +31,8 @@ console.log("this token", token);
     try {
       const response = await axios.post("http://localhost:3001/register", user);
       if (response.status === 201) {
-        localStorage.setItem("token", JSON.stringify(response.data["token"].split(".")[1]));
+       // localStorage.setItem("token", JSON.stringify(response.data["token"].split(".")[1]));
+        console.log("token headerstan", response.headers.Authorization)
         alert("user created sucsfly");
         navigate("../home", { replace: true });
       }
