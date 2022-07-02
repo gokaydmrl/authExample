@@ -36,9 +36,13 @@ exports.postUserHandler = async (req, res) => {
     });
 
     const token = generateToken(user._id);
-    res.status(201).json(user);
+    await res.status(201).json({
+      fName: fName,
+      email: email,
+      password: password,
+      token: token,
+    });
     // res.lerin sırası önemli glb
-    req.headers["Authorization"] = token;
   } catch (error) {
     const errorsObject = handleErrors(error);
     res.status(400).json({ errorsObject });
