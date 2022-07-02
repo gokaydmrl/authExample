@@ -7,6 +7,9 @@ import { useNavigate } from "react-router-dom";
 const Register = () => {
   const navigate = useNavigate();
 
+const token = localStorage.getItem("token")
+console.log("this token", token);
+  
   const [user, setUser] = useState({
     fName: "",
     email: "",
@@ -28,7 +31,7 @@ const Register = () => {
     try {
       const response = await axios.post("http://localhost:3001/register", user);
       if (response.status === 201) {
-        localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("token", JSON.stringify(response.data["token"].split(".")[1]));
         alert("user created sucsfly");
         navigate("../home", { replace: true });
       }
