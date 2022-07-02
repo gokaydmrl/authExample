@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const Register = () => {
   const navigate = useNavigate();
 
-  // const token = localStorage.getItem("token")
+  // const token = localStorage.getItem("token");
   // console.log("this token", token);
 
   const [user, setUser] = useState({
@@ -17,7 +17,7 @@ const Register = () => {
   });
 
   const [errors, setErrors] = useState({});
-  console.log("letssee", errors);
+  // console.log("letssee", errors);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,17 +31,20 @@ const Register = () => {
     try {
       const response = await axios.post(
         "http://localhost:3001/register",
-        user,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        user
+        // {
+        //   headers: {
+        //     Authorization: `Bearer ${response.data.token}`,
+        //   },
+        // }
       );
       if (response.status === 201) {
         localStorage.setItem("token", JSON.stringify(response.data["token"]));
-        console.log("token headerstan", response.headers);
-        alert("user created sucsfly");
+        const token = localStorage.getItem("token");
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        console.log("token", token);
+        console.log("rsp data", response.data);
+        console.log("tkn", token);
         navigate("../home", { replace: true });
       }
       setUser(response.data);
