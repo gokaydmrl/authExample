@@ -1,5 +1,6 @@
 const User = require("../models/dbmodel");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 // post user controller
 const handleErrors = (err) => {
@@ -26,28 +27,49 @@ const generateToken = (id) => {
   });
 };
 
-exports.postUserHandler = async (req, res) => {
+// hash password
+
+// Register User
+// /register endpoint
+
+exports.registerUser = async (req, res) => {
   try {
     const { fName, email, password } = req.body;
+
+    const salt = bcrypt.genSalt(8);
+    const hashedPassword = bcrypt(password, salt);
+
     const user = await User.create({
       fName,
       email,
-      password,
+      password: hashedPassword,
     });
 
     const token = generateToken(user._id);
     await res.status(201).json({
       fName: fName,
       email: email,
-      password: password,
       token: token,
     });
-    // res.lerin sırası önemli glb
   } catch (error) {
     const errorsObject = handleErrors(error);
     res.status(400).json({ errorsObject });
     console.log("ers", errorsObject);
   }
+};
+
+// loginUser
+// /login endpoint
+
+exports.loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+
+    if (user && (await bcrypt.compare(password, user.password))) {
+      await res.json({ email: user.email, token: token });
+    }
+  } catch (error) {}
 };
 
 // get Users controller
