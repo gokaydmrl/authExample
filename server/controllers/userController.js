@@ -67,12 +67,22 @@ exports.loginUser = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user && (await bcrypt.compare(password, user.password))) {
-      await res.json({ email: user.email, token: token });
+      await res.json({ email: user.email, token: user.token });
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-// get Users controller
+// get login handler
+
+exports.getLoginHandler = async (req, res) => {
+  const { email } = req.body;
+  const response = await User.find({ email });
+  res.status(200).json(response);
+};
+
+// get Users register controller
 
 exports.getUserHandler = async (req, res) => {
   const response = await User.find({});
