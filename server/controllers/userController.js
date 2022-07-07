@@ -2,7 +2,7 @@ const User = require("../models/dbmodel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-// post user controller
+// handling errors
 const handleErrors = (err) => {
   let errors = {};
 
@@ -20,24 +20,25 @@ const handleErrors = (err) => {
 };
 
 // creating token
-
+// ikinci paraemtre secret onu env'e al
 const generateToken = (id) => {
   return jwt.sign({ id }, "sonradanBak", {
     expiresIn: 99999,
   });
 };
 
-// hash password
-
 // Register User
+// creating user and saving in db
 // /register endpoint
 
 exports.registerUser = async (req, res) => {
   try {
     const { fName, email, password } = req.body;
 
-    const salt = bcrypt.genSalt(8);
-    const hashedPassword = bcrypt(password, salt);
+    // hash password
+
+    const salt = await bcrypt.genSalt(8);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     const user = await User.create({
       fName,
@@ -46,10 +47,14 @@ exports.registerUser = async (req, res) => {
     });
 
     const token = generateToken(user._id);
+
+    // axios'a gidecek burdan gönderilen data (response.data)
+    // passwoord göndermeye gerek yok sanırım
     await res.status(201).json({
       fName: fName,
       email: email,
       token: token,
+      password: hashedPassword,
     });
   } catch (error) {
     const errorsObject = handleErrors(error);
@@ -65,24 +70,34 @@ exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
+    const token = generateToken(user._id);
 
-    if (user && (await bcrypt.compare(password, user.password))) {
-      await res.json({ email: user.email, token: user.token });
+    if (
+      user &&
+      (await bcrypt.compare(password, user.password, function (err, response) {
+        if (err) {
+          console.log(err);
+        } else if (response === true) {
+          console.log("bcrypt responseu", response);
+        }
+      }))
+    ) {
+      res.json({ email: user.email, token: token });
     }
   } catch (error) {
     console.log(error);
   }
 };
 
-// get login handler
+// get users logged in
 
 exports.getLoginHandler = async (req, res) => {
   const { email } = req.body;
-  const response = await User.find({ email });
+  const response = await User.findOne({ email });
   res.status(200).json(response);
 };
 
-// get Users register controller
+// get registered Users
 
 exports.getUserHandler = async (req, res) => {
   const response = await User.find({});
