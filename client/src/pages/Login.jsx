@@ -23,17 +23,17 @@ const Login = () => {
 
     try {
       const response = await axios.post("http://localhost:3001/login", user);
-      if (response.status === 201) {
-        console.log("resp status", response.status);
-        localStorage.setItem("token", JSON.stringify(response.data["token"]));
-        const token = localStorage.getItem("token");
-        console.log("rsp data token", response.data.token);
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        console.log("token", token);
-        console.log("rsp data", response.data);
-        console.log("tkn", token);
-        navigate("../home", { replace: true });
-      }
+
+      console.log("resp status", response.status);
+      localStorage.setItem("token", JSON.stringify(response.data["token"]));
+      const token = localStorage.getItem("token");
+      console.log("rsp data token", response.data.token);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      console.log("token", token);
+      console.log("rsp data", response.data);
+      console.log("tkn", token);
+      navigate("../home", { replace: true });
+
       setUser(response.data);
     } catch (error) {
       console.log(error);

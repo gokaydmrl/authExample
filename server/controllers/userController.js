@@ -37,7 +37,7 @@ exports.registerUser = async (req, res) => {
 
     // hash password
 
-    const salt = await bcrypt.genSalt(8);
+    const salt = bcrypt.genSaltSync(8);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const user = await User.create({
@@ -69,19 +69,14 @@ exports.registerUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
+
     const user = await User.findOne({ email });
+
+    console.log("cntr user", user);
+
     const token = generateToken(user._id);
 
-    if (
-      user &&
-      (await bcrypt.compare(password, user.password, function (err, response) {
-        if (err) {
-          console.log(err);
-        } else if (response === true) {
-          console.log("bcrypt responseu", response);
-        }
-      }))
-    ) {
+    if (user && bcrypt.compare(password, user.password)) {
       res.json({ email: user.email, token: token });
     }
   } catch (error) {
@@ -91,11 +86,12 @@ exports.loginUser = async (req, res) => {
 
 // get users logged in
 
-exports.getLoginHandler = async (req, res) => {
-  const { email } = req.body;
-  const response = await User.findOne({ email });
-  res.status(200).json(response);
-};
+// exports.getLoginHandler = async (req, res) => {
+//   const { email} = req.body;
+//   const response = await User.find({ email });
+//   res.json(response);
+//   console.log("login resp", response);
+// };
 
 // get registered Users
 

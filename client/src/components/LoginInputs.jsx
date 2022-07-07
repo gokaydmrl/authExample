@@ -22,7 +22,7 @@ const LoginInputs = ({ user, handleSubmit, handleChange}) => {
           onChange={handleChange}
           autoComplete="off"
         />
-        <button>Register</button>
+        <button>Log in</button>
       </form>
     </div>
   );
