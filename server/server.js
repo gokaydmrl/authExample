@@ -1,15 +1,13 @@
-require("dotenv").config()
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const app = express();
-const mongoose = require("mongoose")
-const User = require("./models/dbmodel")
+const mongoose = require("mongoose");
+const User = require("./models/dbmodel");
 
 app.use(express.json());
 app.use(cors());
-
-
 
 const URI = process.env.MONGO_URI;
 
@@ -23,12 +21,9 @@ app.get("/", (req, res) => {
   res.send("hello world");
 });
 
-app.use("/", require("./routes/routers"))
-// User.create({
-//   fName: "gökayd",
-//   email: "abcd@abc.com",
-//   password: "13456"
-// })
+app.use("/", require("./routes/routers"));
+
+
 
 app.listen("3001", () => {
   console.log("server running on port 3001");

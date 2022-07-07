@@ -37,7 +37,7 @@ exports.registerUser = async (req, res) => {
 
     // hash password
 
-    const salt = bcrypt.genSaltSync(8);
+    const salt = await bcrypt.genSalt(8);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const user = await User.create({
@@ -73,10 +73,13 @@ exports.loginUser = async (req, res) => {
     const user = await User.findOne({ email });
 
     console.log("cntr user", user);
-
+    console.log("pswrd", password);
+    console.log("userpswrd", user.password);
+    console.log("id", user._id);
     const token = generateToken(user._id);
+    console.log("this",bcrypt.compare(password, user.password));
 
-    if (user && bcrypt.compare(password, user.password)) {
+    if (user && await bcrypt.compare(password, user.password)) {
       res.json({ email: user.email, token: token });
     }
   } catch (error) {
@@ -98,5 +101,13 @@ exports.loginUser = async (req, res) => {
 exports.getUserHandler = async (req, res) => {
   const response = await User.find({});
   res.status(200).json(response);
-  // console.log("get handler response", response);
+  console.log("get handler response", response);
 };
+
+// User.deleteMany({
+
+// }).then(function(){
+//     console.log("Data deleted"); // Success
+// }).catch(function(error){
+//     console.log(error); // Failure
+// });
