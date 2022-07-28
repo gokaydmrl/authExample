@@ -5,7 +5,6 @@ const bodyParser = require("body-parser");
 const app = express();
 const mongoose = require("mongoose");
 const User = require("./models/dbmodel");
-const { middleware } = require("./middleware");
 
 app.use("/", require("./middleware"));
 
