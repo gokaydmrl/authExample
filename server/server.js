@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const User = require("./models/dbmodel");
 const { middleware } = require("./middleware");
 
-app.use("/", middleware);
+app.use("/", require("./middleware"));
 
 app.use(express.json());
 app.use(
