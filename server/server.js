@@ -5,9 +5,17 @@ const bodyParser = require("body-parser");
 const app = express();
 const mongoose = require("mongoose");
 const User = require("./models/dbmodel");
+const { middleware } = require("./middleware");
+
+app.use("/", middleware);
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    exposedHeaders: "Authorization",
+  })
+);
 
 const URI = process.env.MONGO_URI;
 
@@ -22,8 +30,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/", require("./routes/routers"));
-
-
 
 app.listen("3001", () => {
   console.log("server running on port 3001");

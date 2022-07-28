@@ -1,13 +1,14 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   var token = localStorage.getItem("token");
   const handleClick = () => {
     // navigate ile login'e
     localStorage.removeItem("token");
-navigate("/login")    //tokenı kaldırınca button log in olmuyor hemen
+    navigate("/login", { replace: true });
+    // ? tokenı kaldırınca button log in olmuyor hemen
   };
 
   return (
@@ -16,6 +17,8 @@ navigate("/login")    //tokenı kaldırınca button log in olmuyor hemen
       <button onClick={handleClick}>
         {token ? "Log out" : "Go to Login Page"}
       </button>
+
+      <Link to={"/haber"}> habere yönlendi</Link>
     </div>
   );
 };

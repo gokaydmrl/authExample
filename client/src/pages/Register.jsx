@@ -29,22 +29,24 @@ const Register = () => {
     console.log("this is user", user);
 
     try {
-      const response = await axios.post(
-        "http://localhost:3001/register",
-        user
-        // {
-        //   headers: {
-        //     Authorization: `Bearer ${response.data.token}`,
-        //   },
-        // }
-      );
+      if (user.password.length < 6) {
+        alert("psw 6 ch");
+        return;
+      }
+
+      const response = await axios.post("http://localhost:3001/register", user);
       if (response.status === 201) {
         localStorage.setItem("token", JSON.stringify(response.data["token"]));
-        const token = localStorage.getItem("token");
+        //  const token = localStorage.getItem("token");
+        const token = response.data.token;
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        console.log("ax def headers", axios.defaults.headers);
+
+        console.log("axios resp", response);
+
+        console.log("cmon", axios.defaults.headers.common);
         console.log("token", token);
         console.log("rsp data", response.data);
-        console.log("tkn", token);
         navigate("../home", { replace: true });
       }
       setUser(response.data);
@@ -53,6 +55,7 @@ const Register = () => {
         console.log("eğğ", error.response.data.errorsObject);
         return setErrors(error.response.data.errorsObject);
       }
+      console.log("this error", error);
     }
 
     setUser({
@@ -69,6 +72,7 @@ const Register = () => {
         handleSubmit={handleSubmit}
         handleChange={handleChange}
         errors={errors}
+        password={user.password}
       />
     </div>
   );

@@ -1,7 +1,11 @@
 import React from "react";
 
-const RegisterInputs = ({ user, handleSubmit, handleChange, errors }) => {
-
+const RegisterInputs = ({
+  user,
+  handleSubmit,
+  handleChange,
+  errors,
+}) => {
   return (
     <div>
       <h3>welcome to mashriq</h3>
@@ -38,6 +42,8 @@ const RegisterInputs = ({ user, handleSubmit, handleChange, errors }) => {
           autoComplete="off"
         />
         {errors["password"] && <p className="alert">{errors["password"]}</p>}
+        <br />
+        {/* {user.password < 6 && "password sh 6 characters"} */}
         <br />
         <br />
         <button>Register</button>

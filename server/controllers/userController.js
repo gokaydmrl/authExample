@@ -11,6 +11,9 @@ const handleErrors = (err) => {
     return errors;
   }
 
+  console.log("err errors", err.errors);
+  // console.log("mesage", err);
+
   if (err.message.includes("User validation failed")) {
     Object.values(err.errors).forEach(({ properties }) => {
       errors[properties.path] = properties.message;
@@ -56,9 +59,14 @@ exports.registerUser = async (req, res) => {
       token: token,
       password: hashedPassword,
     });
+    console.log("req token inş: ", req.headers);
   } catch (error) {
     const errorsObject = handleErrors(error);
-    res.status(400).json({ errorsObject });
+
+    res
+      .header({ Authorization: `Bearer ${token}` })
+      .status(400)
+      .json({ errorsObject });
     console.log("ers", errorsObject);
   }
 };
@@ -77,9 +85,9 @@ exports.loginUser = async (req, res) => {
     console.log("userpswrd", user.password);
     console.log("id", user._id);
     const token = generateToken(user._id);
-    console.log("this",bcrypt.compare(password, user.password));
+    console.log("this", bcrypt.compare(password, user.password));
 
-    if (user && await bcrypt.compare(password, user.password)) {
+    if (user && (await bcrypt.compare(password, user.password))) {
       res.json({ email: user.email, token: token });
     }
   } catch (error) {
