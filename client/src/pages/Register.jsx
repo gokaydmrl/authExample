@@ -34,6 +34,11 @@ const Register = () => {
         return;
       }
 
+/* 
+const handler = await registerHandler()
+ 
+*/
+
       const response = await axios.post("http://localhost:3001/register", user);
       if (response.status === 201) {
         localStorage.setItem("token", JSON.stringify(response.data["token"]));

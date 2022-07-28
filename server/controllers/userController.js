@@ -53,20 +53,20 @@ exports.registerUser = async (req, res) => {
 
     // axios'a gidecek burdan gönderilen data (response.data)
     // passwoord göndermeye gerek yok sanırım
-    await res.status(201).json({
-      fName: fName,
-      email: email,
-      token: token,
-      password: hashedPassword,
-    });
+    await res
+      .header({ "Authorization": `Bearer ${token}` })
+      .status(201)
+      .json({
+        fName: fName,
+        email: email,
+        token: token,
+        password: hashedPassword,
+      });
     console.log("req token inş: ", req.headers);
   } catch (error) {
     const errorsObject = handleErrors(error);
 
-    res
-      .header({ Authorization: `Bearer ${token}` })
-      .status(400)
-      .json({ errorsObject });
+    res.status(400).json({ errorsObject });
     console.log("ers", errorsObject);
   }
 };
