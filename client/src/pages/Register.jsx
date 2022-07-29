@@ -34,17 +34,13 @@ const Register = () => {
         return;
       }
 
-/* 
-const handler = await registerHandler()
- 
-*/
-
       const response = await axios.post("http://localhost:3001/register", user);
       if (response.status === 201) {
-        localStorage.setItem("token", JSON.stringify(response.data["token"]));
         //  const token = localStorage.getItem("token");
-        const token = response.data.token;
+        const token = response.headers.authorization.split(" ")[1];
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        localStorage.setItem("token", JSON.stringify(token));
+
         console.log("ax def headers", axios.defaults.headers);
 
         console.log("axios resp", response);

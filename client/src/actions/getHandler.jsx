@@ -1,8 +1,10 @@
 import axios from "axios";
 
-export const getHandler = async (token) => {
+export const getHandler = async () => {
+  const token = localStorage.getItem("token");
+
   try {
-    const resp = await axios.get("https://jsonplaceholder.typicode.com/users", {
+    const resp = await axios.get("http://localhost:3001/register", {
       headers: {
         authorization: `Bearer ${token}`,
       },

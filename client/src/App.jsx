@@ -1,10 +1,12 @@
 import "./App.css";
 import Register from "./pages/Register";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Haber from "./components/Haber";
 function App() {
+  // const token = localStorage.getItem("token");
+
   return (
     <div className="App">
       <Routes>

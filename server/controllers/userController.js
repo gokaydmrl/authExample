@@ -54,7 +54,7 @@ exports.registerUser = async (req, res) => {
     // axios'a gidecek burdan gönderilen data (response.data)
     // passwoord göndermeye gerek yok sanırım
     await res
-      .header({ "Authorization": `Bearer ${token}` })
+      .header({ Authorization: `Bearer ${token}` })
       .status(201)
       .json({
         fName: fName,
@@ -62,7 +62,7 @@ exports.registerUser = async (req, res) => {
         token: token,
         password: hashedPassword,
       });
-    console.log("req token inş: ", req.headers);
+    console.log("req headers: ", req.headers);
   } catch (error) {
     const errorsObject = handleErrors(error);
 
@@ -88,10 +88,12 @@ exports.loginUser = async (req, res) => {
     console.log("this", bcrypt.compare(password, user.password));
 
     if (user && (await bcrypt.compare(password, user.password))) {
-      res.json({ email: user.email, token: token });
+      res
+        .header({ Authorization: `Bearer ${token}` })
+        .json({ email: user.email, token: token });
     }
   } catch (error) {
-    console.log(error);
+    console.log("login error:",error);
   }
 };
 

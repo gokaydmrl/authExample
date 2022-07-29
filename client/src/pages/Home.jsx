@@ -14,6 +14,8 @@ const Home = () => {
   return (
     <div>
       <h1> This is the east side of the world</h1>
+
+
       <button onClick={handleClick}>
         {token ? "Log out" : "Go to Login Page"}
       </button>

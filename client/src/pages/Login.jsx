@@ -24,7 +24,7 @@ const Login = () => {
     try {
       const response = await axios.post("http://localhost:3001/login", user);
       const token = localStorage.getItem("token");
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       console.log("resp status", response.status);
       localStorage.setItem("token", JSON.stringify(response.data["token"]));
