@@ -38,13 +38,12 @@ const Register = () => {
       if (response.status === 201) {
         const token = response.headers.authorization.split(" ")[1];
         //   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        localStorage.setItem("token", JSON.stringify(token));
+        localStorage.setItem("token", token);
 
-        console.log("ax def headers", axios.defaults.headers);
+      //  console.log("ax def headers", axios.defaults.headers);
 
         console.log("axios resp", response);
 
-        console.log("cmon", axios.defaults.headers.common);
         console.log("token", token);
         console.log("rsp data", response.data);
         navigate("../home", { replace: true });

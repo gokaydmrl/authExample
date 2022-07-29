@@ -7,7 +7,7 @@ export const getHandler = async () => {
   try {
     const resp = await axios.get("http://localhost:3001/deneme", {
       headers: {
-        Authorization: `Bearer ${token}`,
+        "authorization": `Bearer ${token}`,
       },
     });
 

@@ -2,13 +2,14 @@ const jwt = require("jsonwebtoken");
 const User = require("./models/dbmodel");
 
 exports.middleware = async function (req, res, next) {
-  let token = null;
+  let token;
+
   if (
-    req.headers.Authorization &&
-    req.headers.Authorization.startsWith("Bearer")
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
   )
     try {
-      token = req.headers.Authorization.split(" ")[1];
+      token = req.headers.authorization.split(" ")[1];
 
       // Verify token
       const decoded = jwt.verify(token, "sonradanBak");
@@ -16,7 +17,7 @@ exports.middleware = async function (req, res, next) {
       console.log("decoded", decoded);
       next();
     } catch (error) {
-      console.log("this error from middleware", error);
+      console.log("dis error from middleware", error);
       throw new Error("Not authorized");
     }
   if (!token) {

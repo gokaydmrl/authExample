@@ -23,11 +23,11 @@ const Login = () => {
 
     try {
       const response = await axios.post("http://localhost:3001/login", user);
-      const token = localStorage.getItem("token");
+      const token = response.headers.authorization.split(" ")[1];
       // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      localStorage.setItem("token", token);
 
       console.log("resp status", response.status);
-      localStorage.setItem("token", JSON.stringify(response.data["token"]));
       console.log("rsp data token", response.data.token);
       console.log("token", token);
       console.log("rsp data", response.data);

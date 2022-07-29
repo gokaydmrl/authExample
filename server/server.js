@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(
   cors({
     credentials: true,
-    exposedHeaders: "Authorization",
+    exposedHeaders: "authorization",
   })
 );
 
