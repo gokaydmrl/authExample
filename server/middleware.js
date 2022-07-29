@@ -1,20 +1,26 @@
 const jwt = require("jsonwebtoken");
 const User = require("./models/dbmodel");
 
-exports.middleware = function (req, res, next) {
+exports.middleware = async function (req, res, next) {
   let token = null;
   if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
+    req.headers.Authorization &&
+    req.headers.Authorization.startsWith("Bearer")
   )
     try {
-      token = req.headers.authorization.split(" ")[1];
-      token && next();
+      token = req.headers.Authorization.split(" ")[1];
 
       // Verify token
+      const decoded = jwt.verify(token, "sonradanBak");
+      req.user = await User.findById(decoded.id).select("-password");
+      console.log("decoded", decoded);
+      next();
     } catch (error) {
       console.log("this error from middleware", error);
-      res.redirect("http://localhost:3000/register");
       throw new Error("Not authorized");
     }
+  if (!token) {
+    res.status(401);
+    throw new Error("no token. not authorized");
+  }
 };

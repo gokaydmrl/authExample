@@ -36,9 +36,8 @@ const Register = () => {
 
       const response = await axios.post("http://localhost:3001/register", user);
       if (response.status === 201) {
-        //  const token = localStorage.getItem("token");
         const token = response.headers.authorization.split(" ")[1];
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        //   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         localStorage.setItem("token", JSON.stringify(token));
 
         console.log("ax def headers", axios.defaults.headers);

@@ -93,7 +93,7 @@ exports.loginUser = async (req, res) => {
         .json({ email: user.email, token: token });
     }
   } catch (error) {
-    console.log("login error:",error);
+    console.log("login error:", error);
   }
 };
 
@@ -111,7 +111,7 @@ exports.loginUser = async (req, res) => {
 exports.getUserHandler = async (req, res) => {
   const response = await User.find({});
   res.status(200).json(response);
-  console.log("get handler response", response);
+  // console.log("get handler response", response);
 };
 
 // User.deleteMany({
